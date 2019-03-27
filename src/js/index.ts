@@ -5,7 +5,9 @@ import axios,{
 import { ICar } from "./Icar";
 
 
-let element: HTMLDivElement = <HTMLDivElement> document.getElementById("content")
+let ContentElement: HTMLDivElement = <HTMLDivElement> document.getElementById("content")
+let GetAllCarsButton: HTMLButtonElement =<HTMLButtonElement> document.getElementById("getAllButton")
+GetAllCarsButton.addEventListener('click', ShowAllCars)
 
 function ShowAllCars():void{
     axios.get<ICar[]>("https://webapicar20190326034339.azurewebsites.net/api/cars")
@@ -14,6 +16,15 @@ function ShowAllCars():void{
         console.log("Er i Then")
         console.log(response)
         
+        let result: string ="<ol>"
+
+        response.data.forEach((car:ICar) => {
+            result += "<li> class = 'bil' "+ car.model+ ""  +  car.vendor +""+ car.id +"</li>"
+            result += "</ol>"
+            
+            ContentElement.innerHTML = result;
+        });
+
     })
     .catch(
         function(error:AxiosError) : void{
@@ -26,4 +37,3 @@ function ShowAllCars():void{
 
 }
 
-ShowAllCars();
